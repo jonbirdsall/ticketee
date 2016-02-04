@@ -12,6 +12,8 @@
             class: "delete" %></li>
   </ul>
 </header>
+
+<p><%= @project.description %></p>
 <header>
   <h2>Tickets</h2>
     
@@ -20,7 +22,7 @@
             class: "new" %></li>
   </ul>
 </header>
-<p><%= @project.description %></p>
+
 
 <ul id="tickets">
   <% @project.tickets.each do |ticket| %>
