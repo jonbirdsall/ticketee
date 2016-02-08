@@ -22,7 +22,7 @@ class ProjectsController < ApplicationController
   end
   
   def show
-    
+    authorize @project, :show?
   end
 
   private
