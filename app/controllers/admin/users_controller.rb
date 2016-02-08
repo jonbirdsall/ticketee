@@ -1,9 +1,9 @@
 class Admin::UsersController < Admin::ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :edit, :update, :archive]
   
   # list all users
   def index
-    @users = User.order(:email)
+    @users = User.excluding_archived.order(:email)
   end
   
   # New for Create view from CRUD
@@ -46,6 +46,19 @@ class Admin::UsersController < Admin::ApplicationController
       flash.now[:alert] = "User has not been updated."
       render "edit"
     end
+  end
+  
+  # Archive for Destroy method from CRUD
+  # - we don't want to destroy users, just put them away for now
+  def archive
+    if @user == current_user
+      flash[:notice] = "You cannot archive yourself!"
+    else
+      @user.archive
+      flash[:notice] = "User has been archived."
+    end
+    
+    redirect_to admin_users_path
   end
   
   private
