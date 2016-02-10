@@ -13,6 +13,7 @@ class TicketsController < ApplicationController
   def new
     @ticket = @project.tickets.build
     authorize @ticket, :create?
+    3.times { @ticket.attachments.build }
   end
   
   def create
@@ -61,7 +62,7 @@ class TicketsController < ApplicationController
   private
   
   def ticket_params
-    params.require(:ticket).permit(:name, :description, :attachment,
-      :attachment_cache)
+    params.require(:ticket).permit(:name, :description, 
+      attachments_attributes: [:file, :file_cache])
   end
 end
