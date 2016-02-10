@@ -23,6 +23,34 @@ RSpec.feature "Users can create new tickets" do
     end
   end
   
+  scenario "with an attachment" do
+    fill_in "Name", with: "Add documentation for blink tag"
+    fill_in "Description", with: "The blink tag has a speed attribute"
+    attach_file "File", "spec/fixtures/speed.txt"
+    click_button "Create Ticket"
+    
+    expect(page).to have_content "Ticket has been created."
+    
+    within("#ticket .attachment") do
+      expect(page).to have_content "speed.txt"
+    end
+  end
+  
+  
+end
+
+RSpec.feature "Users cannot create tickets" do
+  let(:user) { FactoryGirl.create(:user) }
+  
+  before do
+    login_as(user)
+    project = FactoryGirl.create(:project, name: "Internet Explorer")
+    assign_role!(user, :editor, project)
+    
+    visit project_path(project)
+    click_link "New Ticket"
+  end
+  
   scenario "when providing invalid attributes" do
     click_button "Create Ticket"
     
@@ -39,4 +67,5 @@ RSpec.feature "Users can create new tickets" do
     expect(page).to have_content "Ticket has not been created."
     expect(page).to have_content "Description is too short"
   end
+  
 end

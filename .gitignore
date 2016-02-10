@@ -15,3 +15,6 @@
 /log/*
 !/log/.keep
 /tmp
+
+# Ignore public uploads directory
+public/uploads
